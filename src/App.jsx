@@ -7,8 +7,8 @@ import Archive from './pages/Archive'
 import ActivityDetail from './components/ActivityDetail'
 
 function App() {
+  const ACCESS_KEY = 'HW7PDbKJ7q1WulL7qHrULFHxEQDt6nS6-OymzFSuSzs'
   const [contactsData, setContactsData] = useState([])
-
   
   useEffect(() => {
 
