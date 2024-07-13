@@ -1,67 +1,60 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import PhotoContext from './context/PhotoContext'
-import PhotoList from './components/PhotoList'
+import ContactContext from './context/ContactContext'
+import ActivityFeed from './components/ActivityFeed'
 import { Route, BrowserRouter as Router, Routes} from 'react-router-dom'
-import Favorites from './pages/Favorites'
+import Archive from './pages/Archive'
+import ActivityDetail from './components/ActivityDetail'
 
 function App() {
 
   const ACCESS_KEY = 'HW7PDbKJ7q1WulL7qHrULFHxEQDt6nS6-OymzFSuSzs'
-  const [photosData, setPhotosData] = useState([])
+  const [contactsData, setContactsData] = useState([])
 
   
   useEffect(() => {
 
-    const getPhotoFromUnsplash = async () => {
+    const getContactsFromUnsplash = async () => {
       // Put the json link url inside anc change the id to CLIENT_SECRET
-      const photoData = await fetch(`https://api.unsplash.com/photos/?client_id=${ACCESS_KEY}`)
-      const photoJsonData = await photoData.json()
-      const requiredData = photoJsonData.map((data) => {
-      return {
-        image: data.urls.full,
-        description: data.alt_description,
-        isFavorite: false,
-        id: data.id,
-      };
-    });
-      setPhotosData(requiredData)
-      // console.log(photoJsonData)
+      const contactData = await fetch(`https://api.unsplash.com/search/photos?page=1&query=people&client_id=${ACCESS_KEY}`)
+      const contactJsonData = await contactData.json();
+      console.log('contactJsonData: ', contactJsonData.results);
+      const requiredData = contactJsonData.results.map((data) => {
+        return {
+          image: data.urls.full,
+          firstname: data.user.first_name,
+          lastname: data.user.last_name,
+          description: data.user.bio,
+          isArchived: false,
+          id: data.id,
+        };
+      });
+      setContactsData(requiredData)
     }
 
-    getPhotoFromUnsplash()
+    getContactsFromUnsplash()
 
   }, [])
 
   return (
     <>
        <Router>
-          <PhotoContext.Provider
+          <ContactContext.Provider
             value={{
-              photosData,
-              setPhotosData,
+              contactsData,
+              setContactsData,
             }}
           >
           <Routes>
-            <Route path='/' index element={<PhotoList />} />
-            <Route path='/favorites' element={<Favorites />} />
+            <Route path='/' index element={<ActivityFeed />} />
+            <Route path='/archive' element={<Archive />} />
+            <Route path='/call/:id' element={<ActivityDetail/>} />
          </Routes>
-        </PhotoContext.Provider>
+        </ContactContext.Provider>
       </Router>
     </>
    
   )
-
-  // return (
-  //   <PhotoContext.Provider
-  //     value={{
-  //       photosData,
-  //       setPhotosData,
-  //     }}
-  //   >
-  //     <PhotoList />
-  //   </PhotoContext.Provider>
-  // )
 }
 
 export default App

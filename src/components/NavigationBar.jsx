@@ -4,13 +4,13 @@ import { Link } from 'react-router-dom';
 const NavigationBar = () => {
     return(
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" style={{backgroundColor: '#ADC178'}}>
+            <AppBar position="static" style={{backgroundColor: '#212121'}}>
                 <Toolbar>
                     <Button>
-                        <Link to={'/'} style={{color: 'black'}}>Homepage</Link>
+                        <Link to={'/'} style={{color: 'white'}}>Activity Feed</Link>
                     </Button>
                     <Button>
-                        <Link to={'/favorites'} style={{color: 'black'}}>Favorites</Link>
+                        <Link to={'/archive'} style={{color: 'white'}}>Archived Calls</Link>
                     </Button>
                 </Toolbar>
             </AppBar>
